@@ -63,7 +63,8 @@ class Boy:
                     right_down: self.RUN,
                     left_down: self.RUN,
                     right_up: self.RUN,
-                    left_up: self.RUN
+                    left_up: self.RUN,
+                    a_down: self.AUTORUN
                 },
                 self.RUN: {
                     right_up: self.IDLE,
