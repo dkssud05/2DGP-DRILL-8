@@ -1,5 +1,5 @@
 from pico2d import load_image, get_time
-from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT
+from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT, SDLK_a
 
 from state_machine import StateMachine
 
@@ -15,6 +15,8 @@ def right_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_RIGHT
 def left_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_LEFT
+def a_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_a
 
 class Idle:
 
@@ -67,6 +69,9 @@ class Boy:
                     left_up: self.IDLE,
                     right_down: self.IDLE,
                     left_down: self.IDLE
+                },
+                self.AUTORUN:{
+                    time_out: self.IDLE
                 }
             }
         )
@@ -142,6 +147,14 @@ class AutoRun:
     def do(self):
         self.boy.frame = (self.boy.frame + 1) % 8
         self.boy.x += self.boy.dir * 10
+
+        if self.boy.x >= 800:
+            self.boy.dir = self.boy.face_dir = -1
+        elif self.boy.x <= 0:
+            self.boy.dir = self.boy.face_dir = 1
+
+        if get_time() - self.start_time > 5:
+            self.boy.state_machine.handle_state_event(('TIME_OUT', None))
 
     def draw(self):
         if self.boy.face_dir == 1:
