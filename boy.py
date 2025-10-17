@@ -129,17 +129,22 @@ class Run:
             self.boy.image.clip_draw(self.boy.frame * 100, 0, 100, 100, self.boy.x, self.boy.y)
 
 class AutoRun:
-    def __init__(self):
-        pass
+    def __init__(self, boy):
+        self.boy = boy
 
-    def enter(self):
-        pass
+    def enter(self, e):
+        self.boy.dir = self.boy.face_dir = 1
+        self.start_time = get_time()
 
-    def exit(self):
+    def exit(self, e):
         pass
 
     def do(self):
-        pass
+        self.boy.frame = (self.boy.frame + 1) % 8
+        self.boy.x += self.boy.dir * 10
 
     def draw(self):
-        pass
+        if self.boy.face_dir == 1:
+            self.boy.image.clip_draw(self.boy.frame * 100, 100, 100, 100, self.boy.x, self.boy.y + 30)
+        else:
+            self.boy.image.clip_draw(self.boy.frame * 100, 0, 100, 100, self.boy.x, self.boy.y + 30)
