@@ -73,7 +73,9 @@ class Boy:
                     left_down: self.IDLE
                 },
                 self.AUTORUN:{
-                    time_out: self.IDLE
+                    time_out: self.IDLE,
+                    right_down: self.RUN,
+                    left_down: self.RUN
                 }
             }
         )
